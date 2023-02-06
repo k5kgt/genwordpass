@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-import sys, random
+import sys, random, os
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QTextEdit, QLineEdit
 from PyQt5.QtGui import QFont
 
@@ -14,7 +14,7 @@ numberWords = 4
 def parse_wordlist():
     global dictWord
     dictWord={}
-    with open('eff_large_wordlist.txt') as f:
+    with open(os.path.join(sys.path[0], "eff_large_wordlist.txt"), "r") as f:
       for line in f:
         (key, val) = line.split()
         dictWord[int(key)] = val
