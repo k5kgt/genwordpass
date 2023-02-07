@@ -1,14 +1,10 @@
 #! /usr/bin/env python
 
 import sys, random, os
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QTextEdit, QLineEdit, QPushButton, QVBoxLayout
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QTextEdit, QLineEdit, QPushButton, QComboBox, QVBoxLayout
 from PyQt5.QtGui import QFont
 
 random.seed(a=None, version=2)
-
-#how many words wanted in result
-global numberWords
-numberWords = 4
 
 #parse EFF Large wordlist into python dictionary
 def parse_wordlist():
@@ -28,9 +24,9 @@ def rollDice():
   return dictWord[numb]  #returns the dict word with the right number
 
 #build list of words to return as result
-def buildList():
+def buildList(num_words):
     answerList = []
-    for c in range (1, (numberWords +1) ):
+    for c in range (1, (num_words +1) ):
       answerList.append( rollDice() )
     return (answerList) 
 
@@ -40,23 +36,28 @@ class MyWindow(QWidget):
         self.initUI()
 
     def initUI(self):
-        self.text_edit = QTextEdit(', '.join(buildList()))
+        self.text_edit = QTextEdit(', '.join(buildList(3)))
         self.text_edit.setFont(QFont('Arial', 20))
         self.setGeometry(300, 300, 600, 250)
         
         self.update_button = QPushButton("Update")
         self.update_button.clicked.connect(self.updateText)
 
+        self.word_count = QComboBox()
+        self.word_count.addItems(["3", "4", "5", "6", "7", "8"])
+        self.word_count.currentIndexChanged.connect(self.updateText)
+
         layout = QVBoxLayout()
         layout.addWidget(self.text_edit)
         layout.addWidget(self.update_button)
+        layout.addWidget(self.word_count)
         
         self.setLayout(layout)
         
         self.show()
 
     def updateText(self):
-        self.text_edit.setText(', '.join(buildList()))
+        self.text_edit.setText(', '.join(buildList(int(self.word_count.currentText()))))
 
 if __name__ == '__main__':
   app = QApplication(sys.argv)
