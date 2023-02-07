@@ -1,14 +1,14 @@
 #! /usr/bin/env python
 
 import sys, random, os
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QTextEdit, QLineEdit
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QTextEdit, QLineEdit, QPushButton, QVBoxLayout
 from PyQt5.QtGui import QFont
 
 random.seed(a=None, version=2)
 
 #how many words wanted in result
 global numberWords
-numberWords = 4
+numberWords = 5
 
 #parse EFF Large wordlist into python dictionary
 def parse_wordlist():
@@ -35,21 +35,29 @@ def buildList():
       answerList.append( rollDice() )
     return (answerList) 
 
-class MyWindow(QMainWindow):
+class MyWindow(QWidget):
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
-        self.setGeometry(300, 300, 500, 250)
-        self.setWindowTitle("Generate Wordlist Password")
-
         self.text_edit = QTextEdit(', '.join(buildList()))
         self.text_edit.setFont(QFont('Arial', 20))
-        #self.line_edit.setFrame(1)
-        self.setCentralWidget(self.text_edit)
+        self.setGeometry(300, 300, 600, 250)
+        
+        self.update_button = QPushButton("Update")
+        self.update_button.clicked.connect(self.updateText)
+
+        layout = QVBoxLayout()
+        layout.addWidget(self.text_edit)
+        layout.addWidget(self.update_button)
+        
+        self.setLayout(layout)
         
         self.show()
+
+    def updateText(self):
+        self.text_edit.setText(', '.join(buildList()))
 
 if __name__ == '__main__':
   app = QApplication(sys.argv)
