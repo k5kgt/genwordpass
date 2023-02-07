@@ -8,7 +8,7 @@ random.seed(a=None, version=2)
 
 #how many words wanted in result
 global numberWords
-numberWords = 5
+numberWords = 4
 
 #parse EFF Large wordlist into python dictionary
 def parse_wordlist():
@@ -21,7 +21,6 @@ def parse_wordlist():
 
 #roll die x 5 times, then lookup the dictionary resulting word
 def rollDice():
-  global roll
   numb = ''
   for c in range (5):
     roll = random.randint(1,6)
