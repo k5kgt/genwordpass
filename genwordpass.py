@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 import sys, random, os
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QTextEdit, QLineEdit, QPushButton, QComboBox, QVBoxLayout
+from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QTextEdit, QLineEdit, QPushButton, QComboBox, QVBoxLayout, QHBoxLayout)
 from PyQt5.QtGui import QFont
 
 random.seed(a=None, version=2)
@@ -46,16 +46,24 @@ class MyWindow(QWidget):
         self.word_count = QComboBox()
         self.word_count.addItems(["3", "4", "5", "6", "7", "8"])
         self.word_count.currentIndexChanged.connect(self.updateText)
+        self.word_count.setCurrentIndex(1)
+        
+        h_box1 = QHBoxLayout()
+        h_box1.addWidget(self.text_edit)
 
-        layout = QVBoxLayout()
-        layout.addWidget(self.text_edit)
-        layout.addWidget(self.update_button)
-        layout.addWidget(self.word_count)
+        h_box2 = QHBoxLayout()
+        h_box2.addWidget(self.update_button)
+        h_box2.addStretch(1)
+        h_box2.addWidget(self.word_count)
+
+        v_box = QVBoxLayout()
+        v_box.addWidget(self.text_edit)
+        v_box.addLayout(h_box2)
         
-        self.setLayout(layout)
-        
+        self.setLayout(v_box)
+
         self.show()
-
+        
     def updateText(self):
         self.text_edit.setText(', '.join(buildList(int(self.word_count.currentText()))))
 
