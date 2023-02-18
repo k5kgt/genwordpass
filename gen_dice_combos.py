@@ -1,3 +1,6 @@
+# gives combinations of dice rolls for 'n' dice given as argement on command line, 
+# if no argument given will use three dice
+
 import sys
 
 def generate_dice_combinations(n):
