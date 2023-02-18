@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 
 import sys, random, os
-from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QTextEdit, QLineEdit, QPushButton, QComboBox, QVBoxLayout, QHBoxLayout)
+from PyQt5.QtWidgets import (QApplication, QWidget, QLabel, QTextEdit, QLineEdit, QPushButton, QComboBox, QVBoxLayout, QHBoxLayout, QAction, QMainWindow)
 from PyQt5.QtGui import QFont
 
 random.seed(a=None, version=2)
@@ -30,16 +30,21 @@ def buildList(num_words):
       answerList.append( rollDice() )
     return (answerList) 
 
-class MyWindow(QWidget):
+class MyWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.initUI()
 
     def initUI(self):
+        central_widget = QWidget()
+        self.setCentralWidget(central_widget)
+
         self.text_edit = QTextEdit(', '.join(buildList(3)))
         self.text_edit.setFont(QFont('Arial', 20))
         self.setGeometry(300, 300, 600, 250)
-        
+        self.createMenu()
+        self.show()
+            
         self.update_button = QPushButton("Update")
         self.update_button.clicked.connect(self.updateText)
 
@@ -47,7 +52,7 @@ class MyWindow(QWidget):
         self.word_count.addItems(["3", "4", "5", "6", "7", "8"])
         self.word_count.currentIndexChanged.connect(self.updateText)
         self.word_count.setCurrentIndex(1)
-        
+            
         h_box1 = QHBoxLayout()
         h_box1.addWidget(self.text_edit)
 
@@ -58,14 +63,26 @@ class MyWindow(QWidget):
 
         v_box = QVBoxLayout()
         v_box.addWidget(self.text_edit)
+        v_box.addLayout(h_box1)
         v_box.addLayout(h_box2)
         
-        self.setLayout(v_box)
+        central_widget.setLayout(v_box)
 
-        self.show()
+
+    def createMenu(self):
+        exit_act = QAction('Exit', self)
+        exit_act.setShortcut('Ctrl+Q')
+        exit_act.triggered.connect(self.close)
+
+        menu_bar = self.menuBar()
+
+        file_menu = menu_bar.addMenu('File')
+        file_menu.addAction(exit_act)
+
         
     def updateText(self):
         self.text_edit.setText(', '.join(buildList(int(self.word_count.currentText()))))
+
 
 if __name__ == '__main__':
   app = QApplication(sys.argv)
