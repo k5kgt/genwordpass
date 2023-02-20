@@ -41,7 +41,7 @@ class MyWindow(QMainWindow):
 
         self.text_edit = QTextEdit(', '.join(buildList(3)))
         self.text_edit.setFont(QFont('Arial', 20))
-        self.setGeometry(300, 300, 600, 250)
+        self.setFixedSize(600, 250)
         self.createMenu()
         self.show()
             
