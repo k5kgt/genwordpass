@@ -10,7 +10,7 @@ random.seed(a=None, version=2)
 def parse_wordlist():
     global dictWord
     dictWord={}
-    with open(os.path.join(sys.path[0], "eff_large_wordlist.txt"), "r") as f:
+    with open(os.path.join(sys.path[0], "new_large_wordlist.txt"), "r") as f:
       for line in f:
         (key, val) = line.split()
         dictWord[int(key)] = val
